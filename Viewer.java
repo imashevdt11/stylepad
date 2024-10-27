@@ -244,14 +244,19 @@ public class Viewer {
   }
 
   // file choosing window
-  public File showOpenFileDialog() {
+  public File showFileDialog(String command) {
     if (fileChooser == null) {
       fileChooser = new JFileChooser();
     }
 
     File file = null;
+    int returnVal = -100;
 
-    int returnVal = fileChooser.showOpenDialog(null);
+    if (command.equals("Open_Document")) {
+      returnVal = fileChooser.showOpenDialog(null);
+    } else if (command.equals("Save_Document")) {
+      returnVal = fileChooser.showSaveDialog(null);
+    }
 
     if (returnVal == JFileChooser.APPROVE_OPTION) {
       file = fileChooser.getSelectedFile();
@@ -268,5 +273,18 @@ public class Viewer {
   // updating text
   public void update(String text) {
     textPane.setText(text);
+  }
+
+  public String getContent() {
+    return textPane.getText();
+  }
+
+  public void showResultSaveDocumentIntoModel(boolean result) {
+    if (result) {
+      JOptionPane.showMessageDialog(null, "File saved successfully");
+    } else {
+      JOptionPane.showMessageDialog(null, "File wasn't saved",
+                                    "File saving error", JOptionPane.ERROR_MESSAGE);
+    }
   }
 }
