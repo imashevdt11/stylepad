@@ -11,6 +11,9 @@ public class Controller implements ActionListener {
 
   public void actionPerformed(ActionEvent event) {
     String command = event.getActionCommand();
-    System.out.println(command);
+
+    if (command.equals("Insert_Image")) {
+      viewer.insertImage();
+    }
   }
 }
