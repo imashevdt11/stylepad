@@ -1,10 +1,12 @@
 import javax.swing.BorderFactory;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
@@ -23,9 +25,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.io.File;
 
 public class Viewer {
 
+  private JFileChooser fileChooser;
   private JTextPane textPane;
 
   public Viewer() {
@@ -237,5 +241,32 @@ public class Viewer {
   public void insertImage() {
     Icon duke = new ImageIcon("images/duke.png");
     textPane.insertIcon(duke);
+  }
+
+  // file choosing window
+  public File showOpenFileDialog() {
+    if (fileChooser == null) {
+      fileChooser = new JFileChooser();
+    }
+
+    File file = null;
+
+    int returnVal = fileChooser.showOpenDialog(null);
+
+    if (returnVal == JFileChooser.APPROVE_OPTION) {
+      file = fileChooser.getSelectedFile();
+    }
+    return file;
+  }
+
+  // file not found window
+  public void showNotFoundFile() {
+    JOptionPane.showMessageDialog(null, "File not found",
+                                  "About File", JOptionPane.ERROR_MESSAGE);
+  }
+
+  // updating text
+  public void update(String text) {
+    textPane.setText(text);
   }
 }
