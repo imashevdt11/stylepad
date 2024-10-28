@@ -40,9 +40,8 @@ public class Controller implements ActionListener {
           viewer.showResultSaveDocumentIntoModel(result);
         }
       }
-      else if (command.equals("Insert_Image")) {
-        viewer.insertImage();
-      }
+    } else if (command.equals("Insert_Image")) {
+      viewer.insertImage();
     }
   }
 }
