@@ -1,28 +1,33 @@
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.io.IOException;
 
 public class SaveDocumentModel {
 
   public boolean saveToFile(File file, String content) {
 
-    FileOutputStream out = null;
+    PrintWriter outputStream = null;
+    FileWriter fileWriter = null;
 
     try {
-      out = new FileOutputStream(file);
-
-      for (int i = 0; i < content.length(); i++) {
-        char symbol = content.charAt(i);
-        int unicode = (int) symbol;
-        out.write(symbol);
-      }
+      fileWriter = new FileWriter(file);
+      outputStream = new PrintWriter(fileWriter);
+      outputStream.println(content);
+      outputStream.flush();
 
       return true;
+
     } catch (IOException ioe) {
       System.out.println("ioe " + ioe);
     } finally {
       try {
-        out.close();
+        if (fileWriter != null) {
+          fileWriter.close();
+        }
+        if (outputStream != null) {
+          outputStream.close();
+        }
       } catch (IOException ioe) {
         System.out.println("ioe " + ioe);
       }

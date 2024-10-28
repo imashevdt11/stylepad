@@ -50,11 +50,8 @@ public class Viewer {
     frame.setVisible(true);
   }
 
-  // menubar creation
   private JMenuBar createMenubar(Controller controller) {
     JMenuBar menubar = new JMenuBar();
-
-    // menu creation and addition to menubar
     JMenu fileMenu = createFileMenu(controller);
     JMenu editMenu = createEditMenu(controller);
     menubar.add(fileMenu);
@@ -62,7 +59,6 @@ public class Viewer {
     return menubar;
   }
 
-  // "File" menu creation
   private JMenu createFileMenu(Controller controller) {
 
     JMenu fileMenu = new JMenu("File");
@@ -72,7 +68,6 @@ public class Viewer {
     // fileMenu.setFont(font);
     // fileMenu.setForeground(Color.GREEN);
 
-    // menu items creation
     JMenuItem newDocument = new JMenuItem("New", new ImageIcon("images/new.png"));
     newDocument.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_N, ActionEvent.CTRL_MASK));
     newDocument.addActionListener(controller);
@@ -115,10 +110,8 @@ public class Viewer {
     return fileMenu;
   }
 
-  // "Edit" menu creation
   private JMenu createEditMenu(Controller controller) {
 
-    // menu items creation
     JMenuItem cutJMenuItem = new JMenuItem("Cut", new ImageIcon("images/cut.png"));
     cutJMenuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_X, ActionEvent.CTRL_MASK));
     cutJMenuItem.addActionListener(controller);
@@ -191,29 +184,23 @@ public class Viewer {
     return editMenu;
   }
 
-  // create edition area
   public JPanel createEditorArea() {
 
-    // text editor creation
     JTextComponent editor = createEditor();
 
-    // border creation
     Border raisedetched = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
     Border emptyBorder = new EmptyBorder(25, 25, 25, 25);
     Border compound = BorderFactory.createCompoundBorder(emptyBorder, raisedetched);
 
-    // scroller and vieweport creation
     JScrollPane scrollPane = new JScrollPane();
     scrollPane.setBorder(compound);
     JViewport viewport = scrollPane.getViewport();
     viewport.add(editor);
 
-    // update border configuration for panel
     raisedetched = BorderFactory.createEtchedBorder(EtchedBorder.RAISED);
     emptyBorder = new EmptyBorder(10, 10, 10, 10);
     compound = BorderFactory.createCompoundBorder(emptyBorder, raisedetched);
 
-    // panel creation
     JPanel panel = new JPanel();
     panel.setBorder(compound);
     panel.setBackground(new Color(230, 230, 230));
@@ -223,27 +210,22 @@ public class Viewer {
     return panel;
   }
 
-  // text editor creation
   protected JTextComponent createEditor() {
-
-    // text's styles, fonts and attributes formating class
     StyleContext styleContext = new StyleContext();
-
-    // extends Document, supports text styles and allows to format text
     DefaultStyledDocument defaultStyledDocument = new DefaultStyledDocument(styleContext);
-
     textPane = new JTextPane(defaultStyledDocument);
     textPane.setFont(new Font("Roboto", Font.PLAIN, 35));
     return textPane;
   }
 
-  // image insertion
   public void insertImage() {
-    Icon duke = new ImageIcon("images/duke.png");
-    textPane.insertIcon(duke);
+    File file = showFileDialog("Open_Document");
+    if (file != null) {
+      Icon icon = new ImageIcon(file.getAbsolutePath());
+      textPane.insertIcon(icon);
+    }
   }
 
-  // file choosing window
   public File showFileDialog(String command) {
     if (fileChooser == null) {
       fileChooser = new JFileChooser();
@@ -264,13 +246,11 @@ public class Viewer {
     return file;
   }
 
-  // file not found window
   public void showNotFoundFile() {
     JOptionPane.showMessageDialog(null, "File not found",
                                   "About File", JOptionPane.ERROR_MESSAGE);
   }
 
-  // updating text
   public void update(String text) {
     textPane.setText(text);
   }

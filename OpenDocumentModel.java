@@ -1,32 +1,46 @@
+import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class OpenDocumentModel {
 
   public String openFile(File file) {
 
-    String textFromFile = "";
-    FileInputStream in = null;
+    BufferedReader inputStream = null;
+    FileReader fileReader = null;
 
     try {
-      in = new FileInputStream(file);
-      int unicode;
+      List<String> list = new ArrayList<>();
 
-      while ((unicode = in.read()) != -1) {
-        char symbol = (char) unicode;
-        textFromFile = textFromFile + symbol;
+      fileReader = new FileReader(file);
+      inputStream = new BufferedReader(fileReader);
+
+      String line;
+      while ((line = inputStream.readLine()) != null) {
+        list.add(line);
       }
-      return textFromFile;
+      String content = String.join("\n", list);
+      list.clear();
+
+      return content;
+
     } catch (IOException ioe) {
       System.out.println("ioe " + ioe);
     } finally {
       try {
-        in.close();
+        if (fileReader != null) {
+          fileReader.close();
+        }
+        if (inputStream != null) {
+          inputStream.close();
+        }
       } catch (IOException ioe) {
         System.out.println("ioe " + ioe);
       }
     }
-    return textFromFile;
+    return null;
   }
 }
