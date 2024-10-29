@@ -28,8 +28,7 @@ public class Controller implements ActionListener {
       } else {
         // need to write what else
       }
-    }
-    else if (command.equals("Open_Document")) {
+    } else if (command.equals("Open_Document")) {
       File file = viewer.showFileDialog(command);
 
       if (file != null) {
@@ -54,6 +53,8 @@ public class Controller implements ActionListener {
       }
     } else if (command.equals("Insert_Image")) {
       viewer.insertImage();
+    } else if (command.equals("Print_Document")) {
+      viewer.showPrintDocumentDialog();
     }
   }
 }

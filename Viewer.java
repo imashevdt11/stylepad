@@ -26,12 +26,15 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
 import java.io.File;
 
 public class Viewer {
 
   private JFileChooser fileChooser;
   private JTextPane textPane;
+  private Icon icon;
 
   public Viewer() {
     Controller controller = new Controller(this);
@@ -95,8 +98,8 @@ public class Viewer {
     printDocument.setActionCommand("Print_Document");
 
     JMenuItem exitPorgram = new JMenuItem("Exit");
-    printDocument.addActionListener(controller);
-    printDocument.setActionCommand("Exit");
+    exitPorgram.addActionListener(controller);
+    exitPorgram.setActionCommand("Exit");
 
     fileMenu.add(newDocument);
     fileMenu.add(openDocument);
@@ -271,5 +274,35 @@ public class Viewer {
       JOptionPane.showMessageDialog(null, "File wasn't saved",
                                     "File saving error", JOptionPane.ERROR_MESSAGE);
     }
+  }
+
+  public void showPrintDocumentDialog() {
+
+    String content = textPane.getText();
+    PrintDocument printDocument = new PrintDocument(content);
+
+    PrinterJob job = PrinterJob.getPrinterJob();
+    job.setPrintable(printDocument);
+    boolean ok = job.printDialog();
+
+    if (ok) {
+      try {
+        job.print();
+        showResultPrintDocument();
+      } catch (PrinterException pe) {
+        System.out.println("pe: " + pe);
+      }
+    }
+  }
+
+  private void showResultPrintDocument() {
+    if (icon == null) {
+      icon = new ImageIcon("images/duke.png");
+    }
+    JOptionPane.showMessageDialog(null,
+    "The document has been successfully printed",
+    "Printer Document Dialog - Stylepad MVC Pattern",
+    JOptionPane.INFORMATION_MESSAGE,
+    icon);
   }
 }
