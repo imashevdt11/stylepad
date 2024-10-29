@@ -1,41 +1,36 @@
-import java.io.BufferedReader;
+import javax.swing.text.Document;
 import java.io.File;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.ObjectInputStream;
 
 public class OpenDocumentModel {
 
-  public String openFile(File file) {
+  public Document openFile(File file) {
 
-    BufferedReader inputStream = null;
-    FileReader fileReader = null;
+    FileInputStream fileInputStream = null;
+    ObjectInputStream objectInputStream = null;
 
     try {
-      List<String> list = new ArrayList<>();
 
-      fileReader = new FileReader(file);
-      inputStream = new BufferedReader(fileReader);
+      fileInputStream = new FileInputStream(file);
+      objectInputStream = new ObjectInputStream(fileInputStream);
 
-      String line;
-      while ((line = inputStream.readLine()) != null) {
-        list.add(line);
-      }
-      String content = String.join("\n", list);
-      list.clear();
+      Document dataModelFromFile = (Document) objectInputStream.readObject();
 
-      return content;
+      return dataModelFromFile;
 
+    } catch (ClassNotFoundException cnfe) {
+      System.out.println("cnfe " + cnfe);
     } catch (IOException ioe) {
       System.out.println("ioe " + ioe);
     } finally {
       try {
-        if (fileReader != null) {
-          fileReader.close();
+        if (fileInputStream != null) {
+          fileInputStream.close();
         }
-        if (inputStream != null) {
-          inputStream.close();
+        if (objectInputStream != null) {
+          objectInputStream.close();
         }
       } catch (IOException ioe) {
         System.out.println("ioe " + ioe);

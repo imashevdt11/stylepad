@@ -17,6 +17,7 @@ import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
 import javax.swing.text.StyledEditorKit;
 import javax.swing.text.StyleContext;
@@ -251,12 +252,16 @@ public class Viewer {
                                   "About File", JOptionPane.ERROR_MESSAGE);
   }
 
-  public void update(String text) {
-    textPane.setText(text);
+  public void update(Document document) {
+    if (textPane.getDocument() != null) {
+      textPane.getDocument().removeUndoableEditListener(null);
+    }
+    textPane.setDocument(document);
+    document.addUndoableEditListener(null);
   }
 
-  public String getContent() {
-    return textPane.getText();
+  public Document getContent() {
+    return textPane.getDocument();
   }
 
   public void showResultSaveDocumentIntoModel(boolean result) {
