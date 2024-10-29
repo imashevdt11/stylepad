@@ -218,7 +218,7 @@ public class Viewer {
     StyleContext styleContext = new StyleContext();
     DefaultStyledDocument defaultStyledDocument = new DefaultStyledDocument(styleContext);
     textPane = new JTextPane(defaultStyledDocument);
-    textPane.setFont(new Font("Roboto", Font.PLAIN, 35));
+    textPane.setFont(new Font("Roboto", Font.PLAIN, 14));
     return textPane;
   }
 
@@ -277,10 +277,21 @@ public class Viewer {
   }
 
   public void showPrintDocumentDialog() {
-
     String content = textPane.getText();
-    PrintDocument printDocument = new PrintDocument(content);
+    Font fontForPrinting = textPane.getFont();
 
+    // Image image = null;
+
+    // File file = showFileDialog("Open_Document");
+    // if(file != null) {
+      // ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+      // image = icon.getImage();
+    // }
+
+    // PrintDocument printDocument =
+    //     new PrintDocument(content, fontForPrinting, image);
+
+    PrintDocument printDocument = new PrintDocument(content, fontForPrinting);
     PrinterJob job = PrinterJob.getPrinterJob();
     job.setPrintable(printDocument);
     boolean ok = job.printDialog();
