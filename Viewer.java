@@ -16,11 +16,14 @@ import javax.swing.KeyStroke;
 import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
+import javax.swing.text.BadLocationException;
 import javax.swing.text.DefaultStyledDocument;
 import javax.swing.text.Document;
 import javax.swing.text.JTextComponent;
-import javax.swing.text.StyledEditorKit;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
 import javax.swing.text.StyleContext;
+import javax.swing.text.StyledEditorKit;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
@@ -224,9 +227,18 @@ public class Viewer {
 
   public void insertImage() {
     File file = showFileDialog("Open_Document");
+
     if (file != null) {
+      StyleContext styles = new StyleContext();
+      Style style = styles.addStyle(null, null);
       Icon icon = new ImageIcon(file.getAbsolutePath());
-      textPane.insertIcon(icon);
+      StyleConstants.setIcon(style, icon);
+      Document doc = textPane.getDocument();
+      try {
+        doc.insertString(doc.getLength(), "image://" + file.getAbsolutePath(), style);
+      } catch (BadLocationException ble) {
+        System.out.println("ble " + ble);
+      }
     }
   }
 
